@@ -1,6 +1,6 @@
 # user input
 $resourceGroupName = Read-Host -Prompt "Enter the name of the resource group"
-$location = Read-Host -Prompt "Enter the location (e.g., eastus)"
+$location = Read-Host -Prompt "Enter the location"
 $nsgName = Read-Host -Prompt "Enter the name of the Network Security Group"
 $vnetName = Read-Host -Prompt "Enter the name of the Virtual Network"
 $subnetName = Read-Host -Prompt "Enter the name of the Subnet"
