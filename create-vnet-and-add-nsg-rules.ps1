@@ -1,11 +1,11 @@
-# Get user input for variables
+# user input
 $resourceGroupName = Read-Host -Prompt "Enter the name of the resource group"
 $location = Read-Host -Prompt "Enter the location (e.g., eastus)"
 $nsgName = Read-Host -Prompt "Enter the name of the Network Security Group"
 $vnetName = Read-Host -Prompt "Enter the name of the Virtual Network"
 $subnetName = Read-Host -Prompt "Enter the name of the Subnet"
 
-# Check if the VNet exists
+# check if the VNet exists
 $vnet = Get-AzVirtualNetwork -ResourceGroupName $resourceGroupName -Name $vnetName -ErrorAction SilentlyContinue
 
 if (-not $vnet) {
@@ -28,10 +28,10 @@ if (-not $vnet) {
     }
 }
 
-# Create a new Network Security Group
+# create new Network Security Group
 $nsg = New-AzNetworkSecurityGroup -ResourceGroupName $resourceGroupName -Location $location -Name $nsgName
 
-# Define inbound security rule (e.g., allow SSH traffic)
+# define inbound security rule
 $rule1 = New-AzNetworkSecurityRuleConfig -Name "Allow-SSH" `
     -Description "Allow SSH traffic" `
     -Access "Allow" `
@@ -43,7 +43,7 @@ $rule1 = New-AzNetworkSecurityRuleConfig -Name "Allow-SSH" `
     -DestinationAddressPrefix "*" `
     -DestinationPortRange "22"
 
-# Define outbound security rule (e.g., allow outbound HTTP traffic)
+# define outbound security rule
 $rule2 = New-AzNetworkSecurityRuleConfig -Name "Allow-HTTP-Out" `
     -Description "Allow outbound HTTP traffic" `
     -Access "Allow" `
@@ -55,17 +55,17 @@ $rule2 = New-AzNetworkSecurityRuleConfig -Name "Allow-HTTP-Out" `
     -DestinationAddressPrefix "*" `
     -DestinationPortRange "80"
 
-# Add the rules to the Network Security Group
+# add the rules to nsg
 $nsg.SecurityRules.Add($rule1)
 $nsg.SecurityRules.Add($rule2)
 
-# Update the Network Security Group
+# update the Network Security Group
 Set-AzNetworkSecurityGroup -NetworkSecurityGroup $nsg
 
-# Associate the NSG with the Subnet using Set-AzVirtualNetworkSubnetConfig
+# associate nsg with the subnet
 $subnetConfig = Set-AzVirtualNetworkSubnetConfig -VirtualNetwork $vnet -Name $subnetName -AddressPrefix $subnet.AddressPrefix -NetworkSecurityGroup $nsg
 
-# Apply the updated configuration to the virtual network
+# apply updated configuration to the virtual network
 $vnet | Set-AzVirtualNetwork
 
 Write-Host "Network Security Group and rules deployed successfully!"
