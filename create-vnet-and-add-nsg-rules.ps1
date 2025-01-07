@@ -5,6 +5,7 @@ $nsgName = Read-Host -Prompt "Enter the name of the Network Security Group"
 $vnetName = Read-Host -Prompt "Enter the name of the Virtual Network"
 $subnetName = Read-Host -Prompt "Enter the name of the Subnet"
 
+
 # check if the VNet exists
 $vnet = Get-AzVirtualNetwork -ResourceGroupName $resourceGroupName -Name $vnetName -ErrorAction SilentlyContinue
 
